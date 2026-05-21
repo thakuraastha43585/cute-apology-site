@@ -428,18 +428,19 @@ body::after{
 /* ════════════════════════════════════════════
    ✏️  EDIT THIS CONFIG TO PERSONALISE
 ════════════════════════════════════════════*/
+const params = new URLSearchParams(window.location.search);
+
 const config = {
-  name:         "Vaishnavi",
-  message1:     "I messed up... and I'm genuinely so sorry for that 🥺 you deserve only the best from me.",
-  message2:     "You are the most beautiful, soft-hearted person I've ever met — inside and out. Never forget that 🌸",
-  message3:     "No matter what happens, you'll always be my favourite person in this entire world 💝",
-  finalMessage: "I'm really sorry, my love. I accidentally hurt someone who means everything to me, and I hate myself for it. You've always been so patient and kind with me, and I took that for granted. I promise to do better — every single day — because you deserve a love that makes you feel safe, seen, and so incredibly cherished. Please forgive me. 💕"
+  name: decodeURIComponent(params.get("name") || "Cutiepie"),
+  message1: decodeURIComponent(params.get("m1") || "I messed up... and I'm sorry."),
+  message2: decodeURIComponent(params.get("m2") || "You are the cutest person ever 💖"),
+  message3: decodeURIComponent(params.get("m3") || "Please don't stay mad at me 🥺"),
+  finalMessage: decodeURIComponent(params.get("final") || "I'm really sorry my love...")
 };
 
 /* ════ INIT ════ */
-document.getElementById('nameDisplay').textContent = `Hey ${config.name}, cutiepie 💖`;
-buildCards();
-
+document.getElementById('nameDisplay').textContent =
+`Hey ${config.name}, cutiepie 💖`;
 /* ════ PAGE SYSTEM ════ */
 let currentPage = 0;
 const pages = document.querySelectorAll('.page');
@@ -692,12 +693,6 @@ musicBtn.addEventListener('click',()=>{
   else        { stopAudio();  musicBtn.textContent='🎵'; musicBtn.classList.remove('playing'); }
 });
 </script>
-const config = {
-  name:         "Vaishnavi",       // ← recipient's name
-  message1:     "...",             // ← card 1 message
-  message2:     "...",             // ← card 2 message
-  message3:     "...",             // ← card 3 message
-  finalMessage: "..."              // ← the long heartfelt note
-}
+
 </body>
 </html>
