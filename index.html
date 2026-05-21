@@ -346,6 +346,33 @@ body::after{
 </style>
 </head>
 <body>
+    <div id="linkMaker" class="card" style="max-width:500px;margin:40px auto;text-align:center;">
+
+  <h2>Create Your Custom Love Link 💖</h2>
+
+  <input id="inputName" placeholder="Girlfriend name"
+  style="width:90%;padding:12px;margin:10px;border-radius:12px;border:none;">
+
+  <input id="inputM1" placeholder="Message 1"
+  style="width:90%;padding:12px;margin:10px;border-radius:12px;border:none;">
+
+  <input id="inputM2" placeholder="Message 2"
+  style="width:90%;padding:12px;margin:10px;border-radius:12px;border:none;">
+
+  <input id="inputM3" placeholder="Message 3"
+  style="width:90%;padding:12px;margin:10px;border-radius:12px;border:none;">
+
+  <textarea id="inputFinal"
+  placeholder="Final long message"
+  style="width:90%;padding:12px;margin:10px;border-radius:12px;border:none;height:100px;"></textarea>
+
+  <button class="btn" onclick="generateLink()">
+    Generate Custom Link ✨
+  </button>
+
+  <div id="generatedLink" style="margin-top:20px;"></div>
+
+</div>
 
 <!-- Custom cursor -->
 <div id="cursor"></div>
@@ -692,6 +719,55 @@ musicBtn.addEventListener('click',()=>{
   if(!playing){ startAudio(); musicBtn.textContent='🎶'; musicBtn.classList.add('playing'); }
   else        { stopAudio();  musicBtn.textContent='🎵'; musicBtn.classList.remove('playing'); }
 });
+function generateLink() {
+
+  const name = encodeURIComponent(
+    document.getElementById('inputName').value
+  );
+
+  const m1 = encodeURIComponent(
+    document.getElementById('inputM1').value
+  );
+
+  const m2 = encodeURIComponent(
+    document.getElementById('inputM2').value
+  );
+
+  const m3 = encodeURIComponent(
+    document.getElementById('inputM3').value
+  );
+
+  const finalMsg = encodeURIComponent(
+    document.getElementById('inputFinal').value
+  );
+
+  const baseUrl =
+    window.location.origin + window.location.pathname;
+
+  const finalLink =
+`${baseUrl}?name=${name}&m1=${m1}&m2=${m2}&m3=${m3}&final=${finalMsg}`;
+
+  document.getElementById('generatedLink').innerHTML = `
+    <input value="${finalLink}" id="finalLinkBox"
+    style="width:90%;padding:10px;border-radius:10px;">
+
+    <button class="btn" onclick="copyLink()">
+      Copy Link 💖
+    </button>
+  `;
+}
+
+function copyLink() {
+
+  const copyText =
+    document.getElementById("finalLinkBox");
+
+  copyText.select();
+
+  document.execCommand("copy");
+
+  alert("Link copied 💖");
+}
 </script>
 
 </body>
