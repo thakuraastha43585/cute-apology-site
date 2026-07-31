@@ -273,6 +273,24 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
 .intro-opening-status .dots span:nth-child(3){animation-delay:.4s;}
 @keyframes dotBlink{0%,100%{opacity:0;}50%{opacity:1;}}
 .intro-footer{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.09em;color:var(--ink-soft);text-transform:uppercase;}
+
+/* ---------- intro notif list item that is actually a clickable button ---------- */
+button.notif-card{appearance:none;-webkit-appearance:none;border:none;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;}
+
+/* ---------- intro screen 2: bouquet "download" + bloom reveal ---------- */
+.dl-wrap{text-align:center;}
+.dl-icon{font-size:50px;margin-bottom:14px;animation:pulse 1.6s ease-in-out infinite;}
+.dl-title{font-family:var(--font-display);font-size:19px;color:var(--burgundy-dark);margin:0 0 20px;}
+.dl-bar{width:200px;max-width:60vw;height:8px;border-radius:999px;background:var(--cream-dark);margin:0 auto;overflow:hidden;}
+.dl-bar-fill{width:0%;height:100%;background:linear-gradient(90deg,var(--dusty-rose),var(--burgundy));border-radius:999px;transition:width 1.8s ease;}
+.dl-status{margin-top:12px;font-size:14px;color:var(--ink-soft);}
+.bouquet-tap{display:flex;flex-direction:column;align-items:center;gap:14px;background:none;cursor:pointer;padding:0;font-family:var(--font-body);}
+.bouquet-tap .bouquet-art{position:relative;width:220px;height:250px;}
+.bouquet-tap-hint{color:var(--burgundy);font-size:17px;margin:0;}
+.bouquet-tap.bloomed{cursor:default;pointer-events:none;}
+.bouquet-tap.bloomed .bouquet-art{animation:bloomPop .6s ease;}
+@keyframes bloomPop{0%{transform:scale(.9);}55%{transform:scale(1.1);}100%{transform:scale(1);}}
+
 .recipient-stage{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;}
 .recipient-page{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:26px 18px;opacity:0;pointer-events:none;transition:opacity .45s ease;}
 .recipient-page.active{opacity:1;pointer-events:auto;}
@@ -559,22 +577,70 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
 <!-- RECIPIENT APP (visible when the URL has ?id=<cardId>)          -->
 <!-- ============================================================= -->
 <div id="recipientApp" style="display:none;">
-  <!-- INTRO 1 — a single pop-up notification saying he has something for her -->
-  <div id="introNotifScreen" class="intro-screen intro-popup-screen">
-    <button type="button" class="intro-popup-card notif-glow" id="introOpenNotif">
-      <div class="notif-icon notif-icon-heart">💌</div>
-      <div class="notif-body">
-        <div class="notif-top"><span class="notif-label">Now</span></div>
-        <div class="notif-title" id="introFromName">someone</div>
-        <div class="notif-desc">has something for you, tap to open</div>
+  <!-- INTRO 1 — realistic lock-screen with a few everyday notifications, ending on his message -->
+  <div id="introNotifScreen" class="intro-screen">
+    <div class="intro-time" id="introClock">7:21</div>
+    <div class="intro-sub">Girlfriend's Day</div>
+    <div class="notif-list">
+      <div class="notif-card">
+        <div class="notif-icon">📦</div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-label">Delivery</span><span class="notif-time">2m</span></div>
+          <div class="notif-title">Your package</div>
+          <div class="notif-desc">Out for delivery, arriving today</div>
+        </div>
       </div>
-    </button>
-    <p class="intro-hint hand">tap to open</p>
+      <div class="notif-card">
+        <div class="notif-icon">💧</div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-label">Reminder</span><span class="notif-time">6m</span></div>
+          <div class="notif-title">Hydration check</div>
+          <div class="notif-desc">Drink some water, you forgot again</div>
+        </div>
+      </div>
+      <div class="notif-card">
+        <div class="notif-icon">🎧</div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-label">Music</span><span class="notif-time">14m</span></div>
+          <div class="notif-title">Your playlist</div>
+          <div class="notif-desc">Updated with 12 new tracks</div>
+        </div>
+      </div>
+      <button type="button" class="notif-card notif-glow" id="introOpenNotif">
+        <div class="notif-icon notif-icon-heart">💌</div>
+        <div class="notif-body">
+          <div class="notif-top"><span class="notif-label">Now</span></div>
+          <div class="notif-title" id="introFromName">someone</div>
+          <div class="notif-desc">sent you something 💕 tap to open</div>
+        </div>
+      </button>
+    </div>
+    <p class="intro-hint hand">tap the glowing one</p>
   </div>
 
-  <!-- INTRO 2 — Happy Girlfriend's Day reveal -->
-  <div id="introOpeningScreen" class="intro-screen opening-bg" style="display:none;">
-    <div class="intro-bigmsg">
+  <!-- INTRO 2 — a gift "downloading", then tap the bouquet to make it bloom -->
+  <div id="introBouquetScreen" class="intro-screen opening-bg" style="display:none;">
+    <div class="dl-wrap" id="dlWrap">
+      <div class="dl-icon">💐</div>
+      <p class="dl-title">A gift is on its way…</p>
+      <div class="dl-bar"><div class="dl-bar-fill" id="dlBarFill"></div></div>
+      <p class="dl-status">Downloading<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+    </div>
+    <button type="button" class="bouquet-tap" id="bouquetTapBtn" style="display:none;">
+      <div class="bouquet-art">
+        <div class="bouquet-flower anim-float" style="top:2%;left:50%;transform:translateX(-50%) rotate(-4deg);font-size:38px;--rot:-4deg;">🌹</div>
+        <div class="bouquet-flower anim-float" style="top:10%;left:6%;font-size:30px;transform:rotate(-18deg);--rot:-18deg;">🌷</div>
+        <div class="bouquet-flower anim-float" style="top:10%;right:4%;font-size:30px;transform:rotate(18deg);--rot:18deg;">🌷</div>
+        <div class="bouquet-flower anim-twinkle" style="top:0%;left:24%;font-size:22px;">🌸</div>
+        <div class="bouquet-flower anim-twinkle" style="top:0%;right:20%;font-size:22px;">🌼</div>
+        <div class="bouquet-flower" style="top:18%;left:12%;font-size:20px;transform:rotate(-10deg);">🌿</div>
+        <div class="bouquet-flower" style="top:18%;right:10%;font-size:20px;transform:rotate(10deg);">🌿</div>
+        <div class="bouquet-cone"></div>
+        <div class="bouquet-ribbon">🎀</div>
+      </div>
+      <p class="hand bouquet-tap-hint" id="bouquetTapHint">tap the bouquet to open it</p>
+    </button>
+    <div class="intro-bigmsg" id="bouquetBigMsg" style="display:none;">
       <span class="intro-bigmsg-heart">💗</span>
       <h1 class="intro-bigmsg-title">Happy<br>Girlfriend's Day</h1>
       <p class="intro-bigmsg-sub hand" id="introSubMsg">from your favorite person</p>
@@ -651,7 +717,6 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
     <div class="recipient-page" data-page="2">
       <div class="frame-card" style="background:linear-gradient(160deg,#fdf1e7,#f8dbe1);">
         <div class="sticker anim-float" style="top:2%; left:4%; font-size:22px;--rot:-6deg;">🌻</div>
-        <div class="mini-doodle anim-twinkle" style="top:2%; right:4%; font-size:18px;">🎈</div>
         <div class="tag anim-drift" style="position:absolute; top:8%; right:5%; z-index:2;">Happiness</div>
         <div class="tag dark" style="position:absolute; top:15%; left:5%; transform:rotate(-5deg); z-index:2;">Sweetheart</div>
         <div class="speech-tag" style="top:12%; left:50%; transform:translateX(-50%) rotate(-3deg);">you're my favourite person.</div>
@@ -688,28 +753,6 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
               <path fill="#c9384a" d="M12 21s-8.5-5.2-11-10.2C-.5 6 2 2 6 2c2.2 0 3.9 1.2 6 4 2.1-2.8 3.8-4 6-4 4 0 6.5 4 5 8.8C20.5 15.8 12 21 12 21z"/>
             </svg>
           </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 4 — girlfriend's day bouquet -->
-    <div class="recipient-page" data-page="4">
-      <div class="frame-card">
-        <div class="bouquet-stage">
-          <h3 class="hand" style="font-size:24px;margin:0;">A bouquet for you 💐</h3>
-          <div class="bouquet-art">
-            <div class="bouquet-flower anim-float" style="top:2%;left:50%;transform:translateX(-50%) rotate(-4deg);font-size:38px;--rot:-4deg;">🌹</div>
-            <div class="bouquet-flower anim-float" style="top:10%;left:6%;font-size:30px;transform:rotate(-18deg);--rot:-18deg;">🌷</div>
-            <div class="bouquet-flower anim-float" style="top:10%;right:4%;font-size:30px;transform:rotate(18deg);--rot:18deg;">🌷</div>
-            <div class="bouquet-flower anim-twinkle" style="top:0%;left:24%;font-size:22px;">🌸</div>
-            <div class="bouquet-flower anim-twinkle" style="top:0%;right:20%;font-size:22px;">🌼</div>
-            <div class="bouquet-flower" style="top:18%;left:12%;font-size:20px;transform:rotate(-10deg);">🌿</div>
-            <div class="bouquet-flower" style="top:18%;right:10%;font-size:20px;transform:rotate(10deg);">🌿</div>
-            <div class="bouquet-cone"></div>
-            <div class="bouquet-ribbon">🎀</div>
-            <div class="bouquet-note hand" style="bottom:6%;left:-10%;">for you, always</div>
-          </div>
-          <p class="hand" style="font-size:20px;color:var(--burgundy);text-align:center;margin:0;">Happy Girlfriend's Day</p>
         </div>
       </div>
     </div>
@@ -806,7 +849,7 @@ const COUPONS = {
   "FREEBIE":   { type: "percent", value: 100, label: "100% off — free" }
 };
 const BASE_PRICE_INR = 129;
-const RAZORPAY_KEY_ID = "rzp_live_SvD983baZpuP2A";
+const RAZORPAY_KEY_ID = "rzp_live_TH7gs9nI1yjgD8";
 
 /* ---------- floating heart bubbles (decorative, runs everywhere) ---------- */
 (function heartBubbles(){
@@ -1276,23 +1319,48 @@ async function initRecipientView(id){
   if (introSubMsgEl) introSubMsgEl.textContent = card.fromName ? `from ${card.fromName}, to ${card.toName || 'you'}` : 'from your favorite person';
 
   const introNotifScreen = document.getElementById('introNotifScreen');
-  const introOpeningScreen = document.getElementById('introOpeningScreen');
+  const introBouquetScreen = document.getElementById('introBouquetScreen');
   const stageEl = document.querySelector('.recipient-stage');
+  const dlWrap = document.getElementById('dlWrap');
+  const dlBarFill = document.getElementById('dlBarFill');
+  const bouquetTapBtn = document.getElementById('bouquetTapBtn');
+  const bouquetBigMsg = document.getElementById('bouquetBigMsg');
+
+  const clockEl = document.getElementById('introClock');
+  if (clockEl){
+    const now = new Date();
+    let h = now.getHours();
+    const m = now.getMinutes();
+    h = h % 12; if (h === 0) h = 12;
+    clockEl.textContent = `${h}:${m.toString().padStart(2, '0')}`;
+  }
 
   document.getElementById('introOpenNotif').addEventListener('click', function(){
     introNotifScreen.style.display = 'none';
-    introOpeningScreen.style.display = 'flex';
+    introBouquetScreen.style.display = 'flex';
     audioEl.volume = 0.55;
     audioEl.play().then(()=>{ musicBtn.textContent = '🔊'; }).catch(err=>{
       console.warn('Autoplay blocked on intro tap, will offer the music button instead:', err);
     });
+    // simulate the gift "downloading" before it can be opened
+    requestAnimationFrame(() => { dlBarFill.style.width = '100%'; });
     setTimeout(() => {
-      introOpeningScreen.style.display = 'none';
+      dlWrap.style.display = 'none';
+      bouquetTapBtn.style.display = 'flex';
+    }, 1900);
+  }, { once:true });
+
+  bouquetTapBtn.addEventListener('click', function(){
+    bouquetTapBtn.classList.add('bloomed');
+    document.getElementById('bouquetTapHint').style.display = 'none';
+    bouquetBigMsg.style.display = 'block';
+    setTimeout(() => {
+      introBouquetScreen.style.display = 'none';
       stageEl.style.display = 'flex';
       if (audioEl.paused){
         audioEl.play().then(()=>{ musicBtn.textContent = '🔊'; }).catch(()=>{});
       }
-    }, 2200);
+    }, 2400);
   }, { once:true });
 
   const pages = [...document.querySelectorAll('.recipient-page')];
