@@ -203,22 +203,30 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
 .doodle{position:absolute;z-index:2;opacity:.9;pointer-events:none;}
 .doodle svg{display:block;}
 
-/* ---------- balloon page ---------- */
-.balloon-stage,.story-balloon-stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#fde7ec,#f8cfda);overflow:hidden;}
-.balloon-title{text-align:center;}
-.balloon-row{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:14px;width:100%;padding:0 10px;}
-.balloon-btn{background:none;border:none;cursor:pointer;padding:0;width:64px;position:relative;filter:drop-shadow(0 10px 14px rgba(110,36,56,.35));transition:transform .2s ease;}
-.balloon-btn:not(:disabled):hover{transform:translateY(-4px);}
-.balloon-btn svg{width:100%;height:auto;}
-.balloon-btn.popped{animation:balloonPop .45s ease forwards;}
-@keyframes balloonPop{0%{transform:scale(1);}50%{transform:scale(1.25) rotate(3deg);}100%{transform:scale(0);opacity:0;}}
-.balloon-btn:disabled{cursor:default;}
-.balloon-hint,.story-balloon-hint{font-size:12px;color:var(--burgundy-dark);font-weight:700;text-align:center;background:#fff;padding:7px 16px;border-radius:999px;box-shadow:0 6px 14px -6px rgba(0,0,0,.2);}
-.balloon-modal{position:fixed;inset:0;z-index:45;background:rgba(58,34,38,.75);display:none;align-items:center;justify-content:center;padding:24px;}
-.balloon-modal.show{display:flex;}
-.balloon-modal-card{background:var(--cream);border-radius:24px;padding:26px 22px;max-width:320px;width:100%;text-align:center;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);position:relative;}
-.balloon-modal-card .big-heart{font-size:34px;display:block;margin-bottom:10px;}
-.balloon-modal-card p{font-family:var(--font-hand);font-size:24px;color:var(--burgundy);margin:0 0 16px;line-height:1.3;}
+/* ---------- final page: girlfriend's day bouquet ---------- */
+.bouquet-stage,.story-bouquet-stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#fde7ec,#f7cddb);overflow:hidden;padding:16px;}
+.bouquet-art{position:relative;width:220px;height:250px;margin:4px auto 0;}
+.story-bouquet-stage .bouquet-art{width:170px;height:195px;}
+.bouquet-cone{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:132px;height:140px;background:linear-gradient(160deg,#f8efe0,#e9d3ae);clip-path:polygon(50% 0%,100% 100%,0% 100%);box-shadow:0 12px 22px -8px rgba(0,0,0,.28);}
+.story-bouquet-stage .bouquet-cone{width:102px;height:110px;}
+.bouquet-ribbon{position:absolute;bottom:44px;left:50%;transform:translateX(-50%) rotate(-3deg);font-size:26px;}
+.story-bouquet-stage .bouquet-ribbon{bottom:34px;font-size:20px;}
+.bouquet-flower{position:absolute;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18));}
+.bouquet-note{position:absolute;background:#fff8ef;border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.3;color:var(--ink);box-shadow:0 4px 10px rgba(0,0,0,.14);max-width:104px;text-align:center;font-weight:600;transform:rotate(-4deg);}
+
+/* ---------- intro popup notification (single bubble) ---------- */
+.intro-popup-screen{background:linear-gradient(165deg,#3a2226 0%,#6e2438 55%,#4a1424 100%);align-items:center;justify-content:center;}
+@keyframes popupDrop{0%{opacity:0;transform:translateY(-40px) scale(.9);}60%{opacity:1;transform:translateY(6px) scale(1.02);}100%{opacity:1;transform:translateY(0) scale(1);}}
+.intro-popup-card{display:flex;align-items:flex-start;gap:12px;background:rgba(255,250,247,.96);border-radius:18px;padding:16px 16px;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);text-align:left;border:none;font-family:var(--font-body);width:86%;max-width:320px;cursor:pointer;animation:popupDrop .6s cubic-bezier(.34,1.56,.64,1) forwards;}
+.intro-popup-card .notif-icon{width:44px;height:44px;font-size:22px;}
+.intro-popup-card .notif-title{font-size:16px;}
+.intro-popup-card .notif-desc{font-size:13.5px;}
+
+/* ---------- intro big message reveal ---------- */
+.intro-bigmsg{text-align:center;position:relative;}
+.intro-bigmsg-heart{display:block;font-size:44px;animation:heartbeat 1.8s ease-in-out infinite;margin-bottom:10px;}
+.intro-bigmsg-title{font-size:32px;line-height:1.2;color:var(--burgundy);margin:0 0 10px;opacity:0;animation:fadeInDelay .9s ease .2s forwards;}
+.intro-bigmsg-sub{font-size:19px;color:var(--dusty-rose);opacity:0;animation:fadeInDelay .9s ease .7s forwards;}
 
 .nav-dots,.story-dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:5;}
 .dot,.story-dot{width:8px;height:8px;border-radius:50%;background:var(--dusty-rose);opacity:.4;}
@@ -458,18 +466,24 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
         </div>
       </div>
 
-      <!-- PAGE 4 — proud-of-you balloons -->
+      <!-- PAGE 4 — girlfriend's day bouquet -->
       <div class="story-page" data-page="4">
         <div class="story-frame">
-          <div class="story-balloon-stage">
-            <h3 class="balloon-title" style="font-size:16px;">Pop a balloon 🎈</h3>
-            <div class="story-balloon-hint">so proud of you — tap each one</div>
-            <div class="balloon-row" id="previewBalloonRow">
-              <button class="balloon-btn" data-msg="0" style="width:52px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#e8899a"/><path d="M27 58l3 6 3-6z" fill="#e8899a"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-              <button class="balloon-btn" data-msg="1" style="width:58px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#c9384a"/><path d="M27 58l3 6 3-6z" fill="#c9384a"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-              <button class="balloon-btn" data-msg="2" style="width:52px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#d98a95"/><path d="M27 58l3 6 3-6z" fill="#d98a95"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-              <button class="balloon-btn" data-msg="3" style="width:58px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#c9a24b"/><path d="M27 58l3 6 3-6z" fill="#c9a24b"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
+          <div class="story-bouquet-stage">
+            <h3 class="hand" style="font-size:19px;margin:0;">A bouquet for you 💐</h3>
+            <div class="bouquet-art">
+              <div class="bouquet-flower anim-float" style="top:2%;left:50%;transform:translateX(-50%) rotate(-4deg);font-size:28px;--rot:-4deg;">🌹</div>
+              <div class="bouquet-flower anim-float" style="top:10%;left:6%;font-size:22px;transform:rotate(-18deg);--rot:-18deg;">🌷</div>
+              <div class="bouquet-flower anim-float" style="top:10%;right:4%;font-size:22px;transform:rotate(18deg);--rot:18deg;">🌷</div>
+              <div class="bouquet-flower anim-twinkle" style="top:0%;left:24%;font-size:17px;">🌸</div>
+              <div class="bouquet-flower anim-twinkle" style="top:0%;right:20%;font-size:17px;">🌼</div>
+              <div class="bouquet-flower" style="top:18%;left:14%;font-size:15px;transform:rotate(-10deg);">🌿</div>
+              <div class="bouquet-flower" style="top:18%;right:12%;font-size:15px;transform:rotate(10deg);">🌿</div>
+              <div class="bouquet-cone"></div>
+              <div class="bouquet-ribbon">🎀</div>
+              <div class="bouquet-note hand" style="bottom:6%;left:-6%;font-size:9.5px;">for you, always</div>
             </div>
+            <p class="hand" style="font-size:15px;color:var(--burgundy);text-align:center;margin:0;">Happy Girlfriend's Day</p>
           </div>
         </div>
       </div>
@@ -490,14 +504,6 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
       <img id="previewRevealImg" src="" alt="">
       <p class="hand">for you, always.</p>
       <button class="btn btn-primary" id="previewCloseReveal" style="margin-top:10px;">Close</button>
-    </div>
-  </div>
-
-  <div class="balloon-modal" id="previewBalloonModal">
-    <div class="balloon-modal-card">
-      <span class="big-heart">🎈💗</span>
-      <p id="previewBalloonMsg"></p>
-      <button class="btn btn-primary" id="previewCloseBalloon">Close</button>
     </div>
   </div>
 
@@ -553,59 +559,26 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
 <!-- RECIPIENT APP (visible when the URL has ?id=<cardId>)          -->
 <!-- ============================================================= -->
 <div id="recipientApp" style="display:none;">
-  <!-- INTRO 1 — fake notification lock screen -->
-  <div id="introNotifScreen" class="intro-screen">
-    <div class="intro-time" id="introTime">7:21</div>
-    <div class="intro-sub">Girlfriend's Day</div>
-    <div class="notif-list">
-      <div class="notif-card">
-        <div class="notif-icon">📦</div>
-        <div class="notif-body">
-          <div class="notif-top"><span class="notif-label">Delivery</span><span class="notif-time">2m</span></div>
-          <div class="notif-title">Your package</div>
-          <div class="notif-desc">Out for delivery, arriving today</div>
-        </div>
+  <!-- INTRO 1 — a single pop-up notification saying he has something for her -->
+  <div id="introNotifScreen" class="intro-screen intro-popup-screen">
+    <button type="button" class="intro-popup-card notif-glow" id="introOpenNotif">
+      <div class="notif-icon notif-icon-heart">💌</div>
+      <div class="notif-body">
+        <div class="notif-top"><span class="notif-label">Now</span></div>
+        <div class="notif-title" id="introFromName">someone</div>
+        <div class="notif-desc">has something for you, tap to open</div>
       </div>
-      <div class="notif-card">
-        <div class="notif-icon">💧</div>
-        <div class="notif-body">
-          <div class="notif-top"><span class="notif-label">Reminder</span><span class="notif-time">6m</span></div>
-          <div class="notif-title">Hydration check</div>
-          <div class="notif-desc">Drink some water, you forgot again</div>
-        </div>
-      </div>
-      <div class="notif-card">
-        <div class="notif-icon">🎧</div>
-        <div class="notif-body">
-          <div class="notif-top"><span class="notif-label">Music</span><span class="notif-time">14m</span></div>
-          <div class="notif-title">Your playlist</div>
-          <div class="notif-desc">Updated with 12 new tracks</div>
-        </div>
-      </div>
-      <button type="button" class="notif-card notif-glow" id="introOpenNotif">
-        <div class="notif-icon notif-icon-heart">💌</div>
-        <div class="notif-body">
-          <div class="notif-top"><span class="notif-label">Now</span></div>
-          <div class="notif-title" id="introFromName">someone</div>
-          <div class="notif-desc">sent you something 💕 tap to open</div>
-        </div>
-      </button>
-    </div>
-    <p class="intro-hint hand">tap the glowing one</p>
+    </button>
+    <p class="intro-hint hand">tap to open</p>
   </div>
 
-  <!-- INTRO 2 — card opening reveal -->
+  <!-- INTRO 2 — Happy Girlfriend's Day reveal -->
   <div id="introOpeningScreen" class="intro-screen opening-bg" style="display:none;">
-    <h1 class="intro-opening-title">Happy Girlfriend's Day</h1>
-    <div class="opening-card">
-      <div class="opening-card-inner">
-        <img id="introOpeningPhoto" src="" alt="">
-        <div class="opening-overlay-text">Growing Together!</div>
-        <div class="opening-badge" id="introBadge">♥</div>
-      </div>
+    <div class="intro-bigmsg">
+      <span class="intro-bigmsg-heart">💗</span>
+      <h1 class="intro-bigmsg-title">Happy<br>Girlfriend's Day</h1>
+      <p class="intro-bigmsg-sub hand" id="introSubMsg">from your favorite person</p>
     </div>
-    <p class="intro-opening-status hand">opening<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
-    <p class="intro-footer" id="introFooter">made with love</p>
   </div>
 
   <div class="recipient-stage" style="display:none;">
@@ -719,18 +692,24 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
       </div>
     </div>
 
-    <!-- PAGE 4 — proud-of-you balloons -->
+    <!-- PAGE 4 — girlfriend's day bouquet -->
     <div class="recipient-page" data-page="4">
       <div class="frame-card">
-        <div class="balloon-stage">
-          <h3 class="balloon-title" style="font-size:20px;">Pop a balloon 🎈</h3>
-          <div class="balloon-hint">so proud of you — tap each one</div>
-          <div class="balloon-row" id="balloonRow">
-            <button class="balloon-btn" data-msg="0" style="width:62px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#e8899a"/><path d="M27 58l3 6 3-6z" fill="#e8899a"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-            <button class="balloon-btn" data-msg="1" style="width:70px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#c9384a"/><path d="M27 58l3 6 3-6z" fill="#c9384a"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-            <button class="balloon-btn" data-msg="2" style="width:62px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#d98a95"/><path d="M27 58l3 6 3-6z" fill="#d98a95"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
-            <button class="balloon-btn" data-msg="3" style="width:70px;"><svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="28" ry="30" fill="#c9a24b"/><path d="M27 58l3 6 3-6z" fill="#c9a24b"/><line x1="30" y1="60" x2="30" y2="76" stroke="#6e2438" stroke-width="1.5"/></svg></button>
+        <div class="bouquet-stage">
+          <h3 class="hand" style="font-size:24px;margin:0;">A bouquet for you 💐</h3>
+          <div class="bouquet-art">
+            <div class="bouquet-flower anim-float" style="top:2%;left:50%;transform:translateX(-50%) rotate(-4deg);font-size:38px;--rot:-4deg;">🌹</div>
+            <div class="bouquet-flower anim-float" style="top:10%;left:6%;font-size:30px;transform:rotate(-18deg);--rot:-18deg;">🌷</div>
+            <div class="bouquet-flower anim-float" style="top:10%;right:4%;font-size:30px;transform:rotate(18deg);--rot:18deg;">🌷</div>
+            <div class="bouquet-flower anim-twinkle" style="top:0%;left:24%;font-size:22px;">🌸</div>
+            <div class="bouquet-flower anim-twinkle" style="top:0%;right:20%;font-size:22px;">🌼</div>
+            <div class="bouquet-flower" style="top:18%;left:12%;font-size:20px;transform:rotate(-10deg);">🌿</div>
+            <div class="bouquet-flower" style="top:18%;right:10%;font-size:20px;transform:rotate(10deg);">🌿</div>
+            <div class="bouquet-cone"></div>
+            <div class="bouquet-ribbon">🎀</div>
+            <div class="bouquet-note hand" style="bottom:6%;left:-10%;">for you, always</div>
           </div>
+          <p class="hand" style="font-size:20px;color:var(--burgundy);text-align:center;margin:0;">Happy Girlfriend's Day</p>
         </div>
       </div>
     </div>
@@ -745,14 +724,6 @@ input:focus,textarea:focus{border-color:var(--dusty-rose);}
       <img id="revealImg" src="" alt="">
       <p class="hand">for you, always.</p>
       <button class="btn btn-primary" id="closeReveal" style="margin-top:10px;">Close</button>
-    </div>
-  </div>
-
-  <div class="balloon-modal" id="balloonModal">
-    <div class="balloon-modal-card">
-      <span class="big-heart">🎈💗</span>
-      <p id="balloonMsg"></p>
-      <button class="btn btn-primary" id="closeBalloon">Close</button>
     </div>
   </div>
 
@@ -834,12 +805,6 @@ const COUPONS = {
   "SWEET60":   { type: "percent", value: 60, label: "60% off — limited time" },
   "FREEBIE":   { type: "percent", value: 100, label: "100% off — free" }
 };
-const BALLOON_MESSAGES = [
-  "I am SO proud of you, always.",
-  "You are, hands down, the best girl in the whole world.",
-  "Every single day you make me prouder to call you mine.",
-  "My girl, my pride, my whole heart — I love you."
-];
 const BASE_PRICE_INR = 129;
 const RAZORPAY_KEY_ID = "rzp_live_SvD983baZpuP2A";
 
@@ -1167,22 +1132,6 @@ function initCreatorFlow(){
     document.getElementById('previewRevealModal').classList.remove('show');
   });
 
-  document.querySelectorAll('#previewBalloonRow .balloon-btn').forEach(btn => {
-    btn.addEventListener('click', function(){
-      if (this.classList.contains('popped')) return;
-      this.classList.add('popped');
-      this.disabled = true;
-      const msg = BALLOON_MESSAGES[Number(this.dataset.msg)] || BALLOON_MESSAGES[0];
-      setTimeout(() => {
-        document.getElementById('previewBalloonMsg').textContent = msg;
-        document.getElementById('previewBalloonModal').classList.add('show');
-      }, 300);
-    });
-  });
-  document.getElementById('previewCloseBalloon').addEventListener('click', () => {
-    document.getElementById('previewBalloonModal').classList.remove('show');
-  });
-
   const previewMusic = document.getElementById('previewMusic');
   document.getElementById('storyMusicBtn').addEventListener('click', function(){
     if (previewMusic.paused){
@@ -1323,18 +1272,8 @@ async function initRecipientView(id){
   // ---- intro sequence: fake notifications -> card opening -> her page ----
   const introFromNameEl = document.getElementById('introFromName');
   if (introFromNameEl) introFromNameEl.textContent = card.fromName || 'someone special';
-  const introOpeningPhotoEl = document.getElementById('introOpeningPhoto');
-  if (introOpeningPhotoEl) introOpeningPhotoEl.src = urls[0] || urls[1] || '';
-  const introBadgeEl = document.getElementById('introBadge');
-  if (introBadgeEl) introBadgeEl.textContent = (card.toName || '').trim().charAt(0).toUpperCase() || '♥';
-  const introFooterEl = document.getElementById('introFooter');
-  if (introFooterEl) introFooterEl.textContent = card.fromName ? `made with love, ${card.fromName}` : 'made with love';
-  const introTimeEl = document.getElementById('introTime');
-  if (introTimeEl){
-    const now = new Date();
-    let hh = now.getHours() % 12; if (hh === 0) hh = 12;
-    introTimeEl.textContent = `${hh}:${String(now.getMinutes()).padStart(2,'0')}`;
-  }
+  const introSubMsgEl = document.getElementById('introSubMsg');
+  if (introSubMsgEl) introSubMsgEl.textContent = card.fromName ? `from ${card.fromName}, to ${card.toName || 'you'}` : 'from your favorite person';
 
   const introNotifScreen = document.getElementById('introNotifScreen');
   const introOpeningScreen = document.getElementById('introOpeningScreen');
@@ -1353,7 +1292,7 @@ async function initRecipientView(id){
       if (audioEl.paused){
         audioEl.play().then(()=>{ musicBtn.textContent = '🔊'; }).catch(()=>{});
       }
-    }, 2400);
+    }, 2200);
   }, { once:true });
 
   const pages = [...document.querySelectorAll('.recipient-page')];
@@ -1389,22 +1328,6 @@ async function initRecipientView(id){
   });
   document.getElementById('closeReveal').addEventListener('click', () => {
     document.getElementById('revealModal').classList.remove('show');
-  });
-
-  document.querySelectorAll('#balloonRow .balloon-btn').forEach(btn => {
-    btn.addEventListener('click', function(){
-      if (this.classList.contains('popped')) return;
-      this.classList.add('popped');
-      this.disabled = true;
-      const msg = BALLOON_MESSAGES[Number(this.dataset.msg)] || BALLOON_MESSAGES[0];
-      setTimeout(() => {
-        document.getElementById('balloonMsg').textContent = msg;
-        document.getElementById('balloonModal').classList.add('show');
-      }, 300);
-    });
-  });
-  document.getElementById('closeBalloon').addEventListener('click', () => {
-    document.getElementById('balloonModal').classList.remove('show');
   });
 }
 </script>
